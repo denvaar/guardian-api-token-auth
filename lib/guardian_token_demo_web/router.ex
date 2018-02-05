@@ -9,13 +9,18 @@ defmodule GuardianTokenDemoWeb.Router do
     plug GuardianTokenDemo.ApiAuthPipeline
   end
 
+  pipeline :super_admin_only do
+    plug GuardianTokenDemo.ApiAuthPipeline
+    plug GuardianTokenDemo.SuperAdminOnly
+  end
+
   scope "/api", GuardianTokenDemoWeb do
     pipe_through :api
 
     resources "/auth", AuthController, only: [:create]
 
     scope "/" do
-      pipe_through :api_auth
+      pipe_through :super_admin_only
 
       resources "/users", UserController, only: [:index, :update, :delete, :show, :create]
     end
