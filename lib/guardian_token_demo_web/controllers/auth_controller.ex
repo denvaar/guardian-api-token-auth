@@ -7,7 +7,7 @@ defmodule GuardianTokenDemoWeb.AuthController do
 
   def create(conn, %{"email" => email, "password" => password}) do
     with {:ok, user} <- Authentication.authenticate(email, password),
-         {:ok, access_token, _claims} = GuardianTokenDemo.Guardian.encode_and_sign(user, %{pems: [:super_admin]})
+         {:ok, access_token, _claims} = GuardianTokenDemo.Guardian.encode_and_sign(user, %{pems: Enum.map(user.roles, fn role -> role.value end)})
     do
       render(conn, "show.json", access_token: access_token)
     else

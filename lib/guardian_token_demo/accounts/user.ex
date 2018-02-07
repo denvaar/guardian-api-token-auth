@@ -1,12 +1,14 @@
 defmodule GuardianTokenDemo.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias GuardianTokenDemo.Accounts.User
+  alias GuardianTokenDemo.Accounts.{User, Role}
 
 
   schema "users" do
     field :email, :string
     field :password_hash, :string
+
+    many_to_many :roles, Role, join_through: "users_roles", on_replace: :delete
 
     timestamps()
   end

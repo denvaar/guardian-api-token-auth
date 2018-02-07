@@ -23,6 +23,7 @@ defmodule GuardianTokenDemoWeb.Router do
       pipe_through :super_admin_only
 
       resources "/users", UserController, only: [:index, :update, :delete, :show, :create]
+      resources "/roles", RoleController, except: [:new, :edit]
     end
   end
 end
